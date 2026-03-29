@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Workout Tracker API
+  version: 1.0.0
+  description: API for managing users, exercises, and workout plans.
+servers:
+  - url: http://localhost:5000/api
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: { type: string }
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '201':
+          description: Created
+  /auth/login:
+    post:
+      summary: Login user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: OK
+  /exercises:
+    get:
+      summary: Get all exercises
+      responses:
+        '200':
+          description: A list of exercises
+  /workouts:
+    get:
+      summary: Get user workouts
+      responses:
+        '200':
+          description: A list of workouts
+    post:
+      summary: Create a workout session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date: { type: string, format: date }
+                duration: { type: integer }
+                comments: { type: string }
+                sets:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      exerciseId: { type: integer }
+                      sets: { type: integer }
+                      reps: { type: integer }
+                      weight: { type: number }
+      responses:
+        '201':
+          description: Created
